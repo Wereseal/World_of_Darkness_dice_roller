@@ -5,6 +5,7 @@ pub fn welcome_message() -> String {
     {}", get_instructions())
 }
 pub fn get_instructions() -> String {
+    //FIXME: Correct instructions to account for printing only total.
     format!("Enter the arguements in the form:
     \"cargo run arg1 arg2 arg3\" or \"./diceroller arg1 arg2 arg3\"
     arg1 = Number of rolls.

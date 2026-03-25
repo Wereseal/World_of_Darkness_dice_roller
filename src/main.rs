@@ -6,6 +6,7 @@ use colored::Colorize;
 
 fn main() {
     let args: Result<Args, &'static str> = Args::parse_args();
+    //FIXME: Add specific output for sum_rolls function.
     match args {
         Ok(values) => println!("\n\nyou got {} successes", DiceState::roll_all(values)),
         Err(e) => println!("{}\n\n\t  {}", io::welcome_message(), (String::from("ERROR: ") + e).red()), 
