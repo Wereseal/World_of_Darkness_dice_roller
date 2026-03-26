@@ -1,4 +1,4 @@
-use std::{env, num::ParseIntError};
+use std::env;
 
 pub fn welcome_message() -> String {
     format!("\n\tWelcome to my dice roller!\n
@@ -37,40 +37,29 @@ impl Args {
         return None;
     }
     pub fn parse_args() -> Result<Args, &'static str>{
-        let input_args = env::args();
-        let mut temp_rolls: Result<u32, ParseIntError> = Ok(0); 
-        let mut temp_diff: Result<u32, ParseIntError> = Ok(0);
-        let mut temp_spec: String = String::from(""); 
-        let mut args: Args = Args::new();
-
+        let mut input_args = env::args();
         if input_args.len() < 2 {
             return Err("Too few arguments provided.\n");
         }
+        input_args.next();
+        let temp_rolls = input_args.next();
+        let temp_diff = input_args.next();
+        let temp_spec = input_args.next();
+
+        let mut args: Args = Args::new();
         
-        for (i, arg) in input_args.into_iter().enumerate() {
-            println!("{}", arg);
-            match i {
-                0 => (),
-                1 => temp_rolls = arg.parse(),
-                2 => temp_diff = arg.parse(),
-                3 => temp_spec = arg,
-                4.. => break,
-            }
-        }
-        match temp_rolls {
+        match temp_rolls.expect("Somehow rolls is None.").parse::<u32>() {
             Ok(t) => args.remaining_rolls = t,
             Err(_) => return Err("Please enter a valid number for number of rolls."),
         }
-        match temp_diff{
-            Ok(t) => args.difficulty = Some(t),
-            Err(_) => return Err("Please enter a valid number for difficulty."),
+        if let Some(t) = temp_diff {
+            match t.parse::<u32>() {
+                Ok(t) => args.difficulty = Some(t),
+                Err(_) => return Err("Please enter a valid number for difficulty."),
+            }
         }
-        //FIXME: Hacky fix because I am tired, correct later.
-        if args.difficulty == Some(0) {
-            args.difficulty = None;
-        }
-        if temp_spec.to_lowercase() == String::from("y") {
-            args.is_special = true;
+        if let Some(t) = temp_spec {
+            args.is_special = t.to_lowercase() == String::from("y");
         }
         match Self::validate_args(&args) {
             Some(e) => return Err(e), 
