@@ -1,7 +1,5 @@
-mod io;
-mod dice_handler;
-use crate::io::Args;
-use crate::dice_handler::DiceState;
+use diceroller::io::{self, Args};
+use diceroller::dice_handler::DiceState;
 use colored::Colorize;
 
 fn run(args: Args) {
