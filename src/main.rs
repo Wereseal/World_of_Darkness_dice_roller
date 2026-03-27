@@ -13,7 +13,7 @@ fn run(args: Args) {
 }
 fn main() {
     match Args::parse_args() {
-        Ok(t) => run(t),
-        Err(e) => println!("{}\n\n\t  {}", io::welcome_message(), (String::from("ERROR: ") + e).red()), 
+        Ok(args) => run(args),
+        Err(e) => println!("{}\n\n\t{}", io::welcome_message(), format!("ERROR: {}", e).red()), 
     }
 }
